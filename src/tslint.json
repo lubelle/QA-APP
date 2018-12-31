@@ -1,4 +1,7 @@
 {
+    "compilerOptions": {
+        "experimentalDecorators": true
+      },
     "extends": "../tslint.json",
     "rules": {
         "directive-selector": [
