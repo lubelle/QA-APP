@@ -1,5 +1,5 @@
 <app-qa-header [myTitle]="appTitle"></app-qa-header>
 <app-qa-question [question]="questionAnswers.question"></app-qa-question>
-<app-qa-answer *ngFor="let ans of questionAnswers.answers; let i = index"
+<app-qa-answer *ngFor="let ans of questionAnswers.answers; let i = index;"
  [answer]="ans" [index]="i+1" (deleteEvent)="deleteAnswer($event)">
 </app-qa-answer>
