@@ -1,6 +1,8 @@
+import { MaterialModule } from './material.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { QaQuestionComponent } from './qa-question/qa-question.component';
@@ -18,7 +20,9 @@ import { QaHeaderComponent, MyAttrDirective, MyAttrDirective2,  } from './qa-hea
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    BrowserAnimationsModule,
+    MaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]
