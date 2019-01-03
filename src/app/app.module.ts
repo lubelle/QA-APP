@@ -5,14 +5,16 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { QaQuestionComponent } from './qa-question/qa-question.component';
 import { QaAnswerComponent } from './qa-answer/qa-answer.component';
-import { QaHeaderComponent } from './qa-header/qa-header.component';
+import { QaHeaderComponent, MyAttrDirective, MyAttrDirective2,  } from './qa-header/qa-header.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     QaQuestionComponent,
     QaAnswerComponent,
-    QaHeaderComponent
+    QaHeaderComponent,
+    MyAttrDirective,
+    MyAttrDirective2
   ],
   imports: [
     BrowserModule,
