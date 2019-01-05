@@ -1,30 +1,29 @@
-import { MaterialModule } from './material.module';
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserModule }    from '@angular/platform-browser';
+import { NgModule }         from '@angular/core';
+import { FormsModule }      from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
-import { AppComponent } from './app.component';
-import { QaQuestionComponent } from './qa-question/qa-question.component';
-import { QaAnswerComponent } from './qa-answer/qa-answer.component';
-import { QaHeaderComponent, MyAttrDirective, MyAttrDirective2,  } from './qa-header/qa-header.component';
+import { AppComponent, ChildComponent }            from './app.component';
+import { UaNavComponent }          from './ua-nav/ua-nav.component';
+import { UaAnswerEditComponent }   from './ua-answer-edit/ua-answer-edit.component';
+import { UaAnswerHeaderComponent } from './ua-answer-header/ua-answer-header.component';
+import { UaAnswerComponent }       from './ua-answer/ua-answer.component';
+import { UaQuestionComponent }     from './ua-question/ua-question.component';
+import { QaService }            from './qa.service';
+import { RememberService }         from './remember.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    QaQuestionComponent,
-    QaAnswerComponent,
-    QaHeaderComponent,
-    MyAttrDirective,
-    MyAttrDirective2
+    UaNavComponent,
+    UaAnswerEditComponent,
+    UaAnswerHeaderComponent,
+    UaAnswerComponent,
+    UaQuestionComponent,
+    ChildComponent
   ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    BrowserAnimationsModule,
-    MaterialModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+  imports: [ BrowserModule, FormsModule, HttpClientModule ],
+  providers: [ QaService ],
+  bootstrap: [ AppComponent ]
 })
 export class AppModule { }

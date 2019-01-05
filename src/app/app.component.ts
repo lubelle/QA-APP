@@ -1,33 +1,68 @@
-import { QaAnswerComponent } from './qa-answer/qa-answer.component';
-import { QaHeaderComponent } from './qa-header/qa-header.component';
-import { QuestionAnswers, Answer } from './interfaces';
-import { Component } from '@angular/core';
-import { headersToString } from 'selenium-webdriver/http';
+import {Component, OnInit, Input} from '@angular/core';
+import {Answer, QuestionAnswers} from './interfaces';
+import {QaService} from './qa.service';
+import { NgOnChangesFeature } from '@angular/core/src/render3';
+
+@Component({
+  selector: 'child',
+  template: `{{arr}}
+  <div *ngFor="let item of arr">{{item}}</div>`
+})
+export class ChildComponent {
+  @Input() arr;
+}
 
 @Component({
   selector: 'app-root',
-  template: `<app-qa-header [myTitle]="appTitle"></app-qa-header>
-             <app-qa-question [question]="questionAnswers.question"></app-qa-question>
-             <app-qa-answer *ngFor="let ans of questionAnswers.answers; let i = index"
-             [answer]="ans" [index]="i+1" (deleteEvent)="deleteAnswer($event)"></app-qa-answer>
-             `,
-  styleUrls: ['./app.component.css']
+  // providers:  [ ... ], <-- moved to app.module.ts;
+  //                      see HttpClientModule in "imports", and
+  //                      QandAService in "providers" there
+  // directives: [ ... ], <-- moved to app.module.ts; see "declarations"
+  template: `
+    <ua-nav [title]="appTitle"></ua-nav>
+    <ng-template [ngIf]="questionAndAnswers">
+      <div class="card">
+        <ua-question [question]="questionAndAnswers.question"></ua-question>
+        <ua-answer-header [answerCount]="answerCount"></ua-answer-header>
+        <ua-answer *ngFor="let ans of questionAndAnswers.answers; let i=index"
+            [answer]="ans" [index]="i+1" (deleteEvent)="deleteAnswer($event)">
+        </ua-answer>
+      </div>
+    </ng-template>
+    <div class="error">{{errorMsg}}</div>
+    <child [arr]="myArray"></child>
+    <br><button (click) = "changeArrayItem()">Change Array Item</button>
+    <button (click)="changeArray()">change array</button>`,  // TODO create ErrorBarComponent
+    
+  styles: ['.error { margin: 10px; font-size: 14px }'],
 })
-export class AppComponent {
-  appTitle = 'Q&A App';
-  questionAnswers: QuestionAnswers = {
-    question: { author: 'John', content: 'The meaning of life?' },
-    answers: [
-      { author: 'Brown', content: `The answer is number 42.`, accepted: true},
-      { author: 'Jane', content: `The answer is right infront of you.`},
-      { author: 'Ben', content: `No clue`}
-    ]
-
-  };
-
-  deleteAnswer(answer: Answer) {
-    this.questionAnswers.answers.splice(
-      this.questionAnswers.answers.indexOf(answer), 1);
-  }
-
+export class AppComponent implements OnInit {
+  myArray = [1, 2, 3];
+   appTitle = 'Udemy Course - Q&A App';
+   errorMsg: string;
+   questionAndAnswers: QuestionAnswers;
+   constructor(private _qaService: QaService) {
+      console.clear();
+   }
+   ngOnInit() {
+      this._qaService.getQuestionAnswers()
+          .subscribe(
+            questionAndAnswers => this.questionAndAnswers = questionAndAnswers,
+            err                => this.errorMsg           = err,
+          );
+   }
+   get answerCount(): number {
+      if (!this.hasOwnProperty('questionAndAnswers')) { return 0; }
+      return this.questionAndAnswers.answers.length;
+   }
+   deleteAnswer(answer: Answer) {
+      this.questionAndAnswers.answers.splice(
+         this.questionAndAnswers.answers.indexOf(answer), 1);
+   }
+   changeArrayItem() {
+     this.myArray[0]++;
+   }
+   changeArray() {
+     this.myArray = [10, 20, 30];
+   }
 }
